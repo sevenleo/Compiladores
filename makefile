@@ -9,6 +9,34 @@ all: trabalho
 	@echo ____________________________________________________________________Executa
 	@./a.out
  	
+
+tudo: trabalho
+	@echo ____________________________________________________________________Cria
+	@./trabalho < files/5.funfa 
+	@./trabalho < files/5.funfa  > files/5.c
+		@./trabalho < files/4.funfa 
+	@./trabalho < files/4.funfa  > files/4.c
+		@./trabalho < files/0.funfa 
+	@./trabalho < files/3.funfa  > files/3.c
+		@./trabalho < files/2.funfa 
+	@./trabalho < files/2.funfa  > files/2.c
+		@./trabalho < files/1.funfa 
+	@./trabalho < files/1.funfa  > files/1.c
+	@echo ____________________________________________________________________compila
+	g++ files/5.c -o PROG5
+	g++ files/4.c -o PROG4
+	g++ files/3.c -o PROG3
+	g++ files/2.c -o PROG2
+	g++ files/1.c -o PROG1
+	@echo ____________________________________________________________________Executa
+	@./PROG1
+	@./PROG2
+	@./PROG3
+	@./PROG4
+	@./PROG5
+
+
+ 	
 lex.yy.c: trabalho.lex
 	@echo ____________________________________________________________________1/4
 	flex trabalho.lex
@@ -19,7 +47,7 @@ y.tab.c: trabalho.y
 
 trabalho: lex.yy.c y.tab.c
 	@echo ____________________________________________________________________3/4
-	g++ -o trabalho y.tab.c
+	g++ -o trabalho y.tab.c -lfl
 
 clean: 
 	rm y.tab.c

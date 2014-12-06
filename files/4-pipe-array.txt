@@ -1,5 +1,0 @@
-Dado o vetor ZETA[10]
-mostre os pares, separando-os: 
-0 - 2 - 4 - 6 - 8 - 
-Agora os ímpares, porém coloque um ponto e virgula quando chegar no final: 
-1, 3, 5, 7, 9;

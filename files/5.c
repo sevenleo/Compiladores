@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <cstring>
 #include <string>
 #include <iostream>
 
@@ -13,15 +12,14 @@ double dd;
 char cc;
 char ss[256];
 int bb;
-int main ()
-{
-
- // *uso do pipe 
+// *uso do pipe 
 double x_double;
 float x_float;
 char x_char;
 int x_int;
-int b;
+int main ()
+{
+ int b;
 int c;
 int d;
 int temp;
@@ -150,10 +148,10 @@ Temp_I19 = 9;
 ZETA[Temp_I18] = Temp_I19;
 Temp_I20 = 10;
 temp = Temp_I20;
-  cout << "Dado o vetor ZETA[";
-   cout << temp;
-   cout << "]\n";
-   cout << "mostre os pares, separando-os: \n";
+cout << "Dado o vetor ZETA[";
+ cout << temp;
+ cout << "]\n";
+ cout << "mostre os pares, separando-os: \n";
    x_int = 0;
 ROT1:
   Temp_B2 = x_int < temp;
@@ -167,13 +165,12 @@ Temp_I26 = 0;
 Temp_B0 = Temp_I25==Temp_I26;
   Temp_B1 = !Temp_B0;
   if( Temp_B1 ) goto ROT0;
-  cout << ZETA[x_int];
-   cout << " - ";
+cout << " - ";
  ROT0:
   x_int = x_int + 1;
   goto ROT1;
 ROT2:
-  cout << "\nAgora os ímpares, porém coloque um ponto e virgula quando chegar no final: \n";
+cout << "\nAgora os ímpares, porém coloque um ponto e virgula quando chegar no final: \n";
    x_int = 0;
 ROT6:
   Temp_B8 = x_int < temp;
@@ -193,12 +190,12 @@ Temp_B6 = x_int<Temp_I33;
 Temp_B7 =  ! Temp_B6 ;
 if(Temp_B7)
 goto ROT4;
-  cout << ZETA[x_int];
-   cout << ", ";
+cout << ZETA[x_int];
+ cout << ", ";
  goto ROT5;
 ROT4: ;
-  cout << ZETA[x_int];
-   cout << ";";
+cout << ZETA[x_int];
+ cout << ";";
  ROT5: ;
 ROT3:
   x_int = x_int + 1;
@@ -210,14 +207,14 @@ Temp_I36 = 100;
 c = Temp_I36;
 Temp_I37 = 10;
 d = Temp_I37;
-  cout << "\n\nDentro do intervalo de ";
-   cout << b;
-   cout << " ate ";
-   cout << c;
-   cout << "\n";
-   cout << "mostre os primeiros";
-   cout << d;
-   cout << ", porém multiplique-os por 10.0001 antes de imprimir\n";
+cout << "\n\nDentro do intervalo de ";
+ cout << b;
+ cout << " ate ";
+ cout << c;
+ cout << "\n";
+ cout << "mostre os primeiros";
+ cout << d;
+ cout << ", porém multiplique-os por 10.0001 antes de imprimir\n";
    x_int = b;
 ROT9:
   Temp_B11 = x_int <= c;
@@ -228,15 +225,15 @@ ROT9:
 Temp_D1 = 10.0001;
 Temp_D0 = x_int*Temp_D1;
 temp1 = Temp_D0;
-  cout << temp1;
-   cout << "\n";
+cout << temp1;
+ cout << "\n";
  ROT8:
   x_int = x_int + 1;
   goto ROT9;
 ROT10:
-  cout << "mostre os ultimos ";
-   cout << d;
-   cout << ", porém multiplique-os por 10.0001 antes de imprimir\n";
+cout << "mostre os ultimos ";
+ cout << d;
+ cout << ", porém multiplique-os por 10.0001 antes de imprimir\n";
    x_int = b;
 ROT12:
   Temp_B14 = x_int <= c;
@@ -247,8 +244,8 @@ ROT12:
 Temp_D3 = 10.0001;
 Temp_D2 = x_int*Temp_D3;
 temp1 = Temp_D2;
-  cout << temp1;
-   cout << "\n";
+cout << temp1;
+ cout << "\n";
  ROT11:
   x_int = x_int + 1;
   goto ROT12;
@@ -257,18 +254,18 @@ Temp_C0 = 'A';
 a = Temp_C0;
 Temp_C1 = 'z';
 z = Temp_C1;
-  cout << "\nQuais caracteres temos entre A-z ? \n";
+cout << "\nQuais caracteres temos entre A-z ? \n";
    x_char = a;
 ROT15:
   Temp_B16 = x_char <= z;
   Temp_B17 = !Temp_B16;
   if( Temp_B17 ) goto ROT16;
-  cout << x_char;
+cout << x_char;
  ROT14:
   x_char = x_char + 1;
   goto ROT15;
 ROT16:
-  cout << "\n\nQuantos nao sao letras ? \n";
+cout << "\n\nQuantos nao sao letras ? \n";
    x_char = a;
 ROT18:
   Temp_B22 = x_char <= z;
@@ -282,12 +279,12 @@ Temp_C3 = 'a';
 Temp_B20 = x_char<Temp_C3;
   Temp_B21 = !Temp_B20;
   if( Temp_B21 ) goto ROT17;
-  cout << x_char;
+cout << x_char;
  ROT17:
   x_char = x_char + 1;
   goto ROT18;
 ROT19:
-  cout << "\n\nAgora mostre somente as letras maiusculas:\n";
+cout << "\n\nAgora mostre somente as letras maiusculas:\n";
    x_char = a;
 ROT21:
   Temp_B26 = x_char <= z;
@@ -297,12 +294,12 @@ Temp_C4 = 'Z';
 Temp_B24 = x_char<=Temp_C4;
   Temp_B25 = !Temp_B24;
   if( Temp_B25 ) goto ROT20;
-  cout << x_char;
+cout << x_char;
  ROT20:
   x_char = x_char + 1;
   goto ROT21;
 ROT22:
-  cout << "\n\nAgora mostre somente as letras minusculas:\n";
+cout << "\n\nAgora mostre somente as letras minusculas:\n";
    x_char = a;
 ROT24:
   Temp_B30 = x_char <= z;
@@ -321,14 +318,12 @@ Temp_C9 = Temp_C8;
 Temp_B28 = x_char>Temp_C9;
   Temp_B29 = !Temp_B28;
   if( Temp_B29 ) goto ROT23;
-  cout << x_char;
+cout << x_char;
  ROT23:
   x_char = x_char + 1;
   goto ROT24;
 ROT25:
-  cout << "\n";
+cout << "\n";
  
-
- return 0; 
 }
 

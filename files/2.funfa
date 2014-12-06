@@ -1,0 +1,105 @@
+//---------------------------- PROGRAMA 2 ----------------------------------------
+
+//main()
+LetTheGamesBegin()
+
+alfa   //inicio da funcao main
+
+int i, j, k, soma;
+
+int matrix1 {3, 4};
+int matrix2 {4, 10};
+int matrix_result {3, 10};
+
+//Inicializando matriz 1:
+
+enrolando (i <- 0; i < 3)
+
+	enrolando (j <- 0; j < 4)
+		matrix1{i, j} <- j * i;
+		j <- j + 1;
+	end enrolando
+
+	i <- i + 1;
+
+end enrolando
+
+
+//Inicializando matriz 2:
+
+enrolando (i <- 0; i < 4)
+
+	enrolando (j <- 0; j < 10)
+		matrix2{i, j} <- i + j;
+		j <- j + 1;
+	end enrolando
+
+	i <- i + 1;
+
+end enrolando
+
+//Imprimindo matriz 1:
+
+mostre << "Matriz 1: " << "\n";
+
+enrolando (i <- 0; i < 3)
+
+	enrolando (j <- 0; j < 4)
+		mostre << matrix1{i, j} << " ";
+		j <- j + 1;
+	end enrolando
+
+	mostre << "\n";
+	i <- i + 1;
+
+end enrolando
+
+mostre << "\n";
+
+//Imprimindo matriz 2:
+
+mostre << "Matriz 2: " << "\n";
+
+enrolando (i <- 0; i < 4)
+
+	enrolando (j <- 0; j < 10)
+		mostre << matrix2{i, j} << " ";
+		j <- j + 1;
+	end enrolando
+
+	mostre << "\n";
+	i <- i + 1;
+
+end enrolando
+
+//Produto das matrizes
+enrolando (i <- 0; i < 3)
+	enrolando(j <- 0; j < 10)
+		soma <- 0;
+		enrolando (k <- 0; k < 4)
+			soma <- soma + matrix1{i, k} * matrix2{k, j};
+			matrix_result{i ,j} <- soma;
+			k <- k + 1;
+		end enrolando
+		j <- j + 1;
+	end enrolando
+	i <- i + 1;
+end enrolando
+
+mostre << "\nProduto das Matrizes 1 e 2: " << "\n";
+
+enrolando (i <- 0; i < 3)
+
+	enrolando (j <- 0; j < 10)
+		mostre << matrix_result{i, j} << " ";
+		j <- j + 1;
+	end enrolando
+
+	mostre << "\n";
+	i <- i + 1;
+
+end enrolando
+
+mostre << "\n";
+
+omega  //fim da funcao main

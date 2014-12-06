@@ -46,10 +46,9 @@ struct Atributo {
     this->v = v;
     this->t.nome = t;
     this->c = c;
-    this->p = p; //!!!!
+    this->p = p;
   }
 };
-
 
 typedef struct _TIPO_OPER
 {
@@ -86,8 +85,6 @@ struct _NTEMP_GLOBAL
 {
   int i, r, c, s, b, d; //int, real, char, string, boolean, double
 } NTEMP_GLOBAL = {0, 0, 0, 0, 0, 0};
-
-
 
 
 /* Operacoes*/
@@ -260,6 +257,12 @@ TIPO_OPER tipo_operador[TAM_MAX_OPERADORES] = {
             {"OU", "D", "R", "D"},
             {"E", "R", "D", "D"},
             {"E", "D", "R", "D"},
+            {"-", "C", "C", "I"},
+            {"+", "C", "C", "I"},
+            {"-", "C", "I", "C"},
+            {"+", "I", "C", "C"},
+            {"-", "C", "I", "C"},
+            {"+", "I", "C", "C"},
             {"%", "I", "I", "I"}
             };
 
@@ -284,6 +287,7 @@ string Codigo_para_Var;
 string pipeAtivo;
 string RotuloFimPipe; 
 string lastpipe;
+string TAM_ARRAY;
 
 //funcoes
 void yyerror(const char*);
@@ -291,6 +295,7 @@ int yylex();
 int yyparse();
 void erro(string msg);
 
+void geraCodigoForArray( Atributo* SS, const Atributo& inicial,const Atributo& condicao,const Atributo& passo,const Atributo& cmds );
 void tipo_resultado(string operador, Atributo op1, Atributo op2, Atributo &resultado);
 void gera_codigo_operador(Atributo &ss, Atributo &s1, Atributo &s2, Atributo &s3);
 void insere_varglobal (string nome, Tipo t);
@@ -385,7 +390,7 @@ string DeclaraVarPipes();
 
 SL    : S
     {
-      cout << "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n//#include <cstring>\n#include <string>\n#include <iostream>\n\nusing namespace std;\n\n" +  $1.c << endl;
+      cout << "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <string>\n#include <iostream>\n\nusing namespace std;\n\n" +  $1.c << endl;
     }
     ;
 
@@ -395,18 +400,17 @@ S   :  PROTOTIPO_FUNCOES VARIAVEIS_GLOBAIS BLOCO_PRINCIPAL FUNCTIONS   { $$.c = 
 
 BLOCO_PRINCIPAL   : _FUNCAO_MAIN BLOCO { 
 											$$.c = "";
+											$$.c += DeclaraVarPipes();
 											$$.c += "int main ()\n"; 
-											$$.c += $2.c; 
+											$$.c += $2.c;
 										}
       ;
 
 
-
 BLOCO : _ALFA VARS_LOCAIS CMDS _OMEGA
-      { $$.c = "{\n\n "  +DeclaraVarPipes()+ gera_variavellocal_temp() +  $3.c + "\n\n return 0; \n}\n"; }
+      { $$.c = "{\n "  + gera_variavellocal_temp() + $3.c + "\n}\n"; }
 
     ;
-
 
 PROTOTIPO_FUNCOES :  PROTOTIPO_FUNCOES PROTOTIPO ';'  { $$.c += $2.c; }
       |           { $$.c = ""; }
@@ -458,23 +462,24 @@ LISTAPARAMETROS : LISTAPARAMETROS ',' PARAMETRO { $$.p += "#" + $3.t.tipo_base; 
         | PARAMETRO         { $$.p = "#" + $1.t.tipo_base; }
         ;
 
-PARAMETRO : TIPO _ID
+PARAMETRO : RETORNO _ID
     {
         nparams++;
         $$.t = $1.t;
         $$.c = $1.c + " " + $2.v;
         inclui_parametro($2.v, $1.t);
         $$.p = "#" + $1.t.tipo_base;
+        
     }
       ;
 
 VARIAVEIS_GLOBAIS : DECLVARG ';' VARIAVEIS_GLOBAIS  { $$.c = gera_varglobal_temp(); + "\n" + $3.c; }
       |  { 
-				$$.c = "\n"; 
-		  }
+                $$.c = "\n"; 
+          }
       ;
-
-
+ 
+ 
 DECLVARG  : DECLVARG ',' _ID ARRAY CMD_ATRIBUICAO
       {
         $$.t = $1.t;
@@ -494,11 +499,12 @@ DECLVARG  : DECLVARG ',' _ID ARRAY CMD_ATRIBUICAO
         insere_varglobal($2.v , $1.t);
       }
       ;
+ 
 
 
-ARRAY:   '(' _CTE_INT ')' 
+ARRAY:   '{' _CTE_INT '}'
         { $$.t.ndim = 1; $$.t.tam_dim[0] = atoi(($2.v).c_str()); $$.t.tam_dim[1] = 0; }
-    | '(' _CTE_INT ',' _CTE_INT ')'
+    | '{' _CTE_INT ',' _CTE_INT '}'
         { $$.t.ndim = 2; $$.t.tam_dim[0] = atoi(($2.v).c_str()); $$.t.tam_dim[1] = atoi(($4.v).c_str()); }
     |
         { $$.t.ndim = 0; $$.t.tam_dim[0] = 0; $$.t.tam_dim[1] = 0; }
@@ -507,8 +513,10 @@ ARRAY:   '(' _CTE_INT ')'
 
 
 VARS_LOCAIS : DECLVARL ';' VARS_LOCAIS {}
-      | {}
+    | {}
       ;
+
+
 DECLVARL  : DECLVARL ',' _ID ARRAY CMD_ATRIBUICAO
       {
         $$.t = $1.t;
@@ -520,7 +528,7 @@ DECLVARL  : DECLVARL ',' _ID ARRAY CMD_ATRIBUICAO
 
         if($5.v != "")
         {
-          Codigo_para_Var +=$5.c + $3.v + "=" + $5.v + ";\n";
+          Codigo_para_Var += $5.c + $3.v + "=" + $5.v + ";\n";
         }
       }
       | TIPO _ID ARRAY CMD_ATRIBUICAO
@@ -555,7 +563,7 @@ DECLVARL  : DECLVARL ',' _ID ARRAY CMD_ATRIBUICAO
 
 
 FUNCTIONS : FUNCTIONS FUNCTION    { $$.c = $1.c + $2.c; }
-    |         { $$.c = ""; }
+    |        { $$.c = ""; }
     ;
 
 FUNCTION  : RETORNO _ID '(' PARAMETROS ')' BLOCO
@@ -575,6 +583,7 @@ FUNCTION  : RETORNO _ID '(' PARAMETROS ')' BLOCO
           $$.c = "void " + $2.v + "(" + $4.c + "," + $1.c + aux + ")\n" + $6.c;
         }
         ir = ir + 1;
+        
       }
       else
       {
@@ -594,17 +603,13 @@ FUNCTION  : RETORNO _ID '(' PARAMETROS ')' BLOCO
         inclui_funcao($2.v, $1.t, $4.p);
         nfuncao++;
       }
-
+      
       nparams = 0;
     }
     ;
 
 RETORNO : TIPO  { $$.t = $1.t; $$.c = $1.c; }
     | _VOID   { $$.t.tipo_base = "V"; }
-    ;
-
-LST_LST_E : LST_LST_E ',' '(' LST_E ')'   { }
-    | '(' LST_E ')'       { }
     ;
 
 CMDS: CMDS CMD  { $$.c = $1.c + $2.c; }
@@ -623,16 +628,18 @@ CMD   : CMD_E ';'     { }
       | CMD_PIPE  { }
       ;
 
-
 CMD_ATRIBUICAO  : _ATRIBUI E        { $$.v = $2.v; $$.t = $2.t; $$.c = $2.c; }
-    | _ATRIBUI  '(' LST_E ')'   { $$.v = $3.v; $$.c = $3.c; }
-    | _ATRIBUI  '(' LST_LST_E ')' { }
+    | _ATRIBUI  '{' LST_E '}'   { $$.v = $3.v; $$.c = $3.c; }
+    | _ATRIBUI  '{' LST_LST_E '}' { }
     |         { $$.v = ""; $$.c = ""; }
     ;
 
-CMD_IN  : _CIN F     { $$.c = $2.c + "cin >>" + $2.v + " ;\n"; }
-      ;
+LST_LST_E : LST_LST_E ',' '{' LST_E '}'   { }
+| '{' LST_E '}'       { }
+;
 
+CMD_IN  : _CIN F     { $$.c = $2.c + "cin >> " + $2.v + " ;\n"; }
+      ;
 
 
 CMD_OUT : _COUT COUT_EXPR
@@ -641,7 +648,14 @@ CMD_OUT : _COUT COUT_EXPR
 
 COUT_EXPR : COUT_EXPR _SHIFTL E
 {
-    $$.c = $1.c + $3.c + "  cout << " + $3.v  + ";\n ";
+    if (($3.t.ndim != 0) && ($3.t.tipo_base == "S"))
+        {
+            $$.c = $1.c + $3.c + "cout << " + $3.v  + ";\n ";
+        }
+        else
+        {
+            $$.c = $1.c + $3.c + "cout << " + $3.v  + ";\n ";
+        }
 }
 | { $$ = Atributo(); }
 ;
@@ -651,7 +665,7 @@ CMD_RETURN  : _RETORNA_FUNCAO E ';'
           $$.c = $2.c + "RI = " + $2.v + ";\nreturn;\n";
           //compara_resultado($2.t.tipo_base);  
       }
-    | _RETORNA_FUNCAO _VOID ';' { }
+    | _RETORNA_FUNCAO _VOID ';'
       ;
 
 
@@ -697,7 +711,7 @@ CMD_DO_WHILE: _FAZ VARS_LOCAIS CMDS _ENROLA_SE '(' E ')' ';'
 ;
 
 //No nosso for nao declaramos variavel, a variavel ja tem que ter sido declarada! Temos que incrementar manualmente.
-CMD_FOR   : _ENROLANDO '(' _ID _ATRIBUI _CTE_INT ';' E ')' VARS_LOCAIS CMDS _END_ENROLANDO
+CMD_FOR   : _ENROLANDO '(' E ';' E ')' VARS_LOCAIS CMDS _END_ENROLANDO
       {
 
           string varTeste = gera_temp( "B" );
@@ -705,10 +719,10 @@ CMD_FOR   : _ENROLANDO '(' _ID _ATRIBUI _CTE_INT ';' E ')' VARS_LOCAIS CMDS _END
           string labelTeste = gera_rotulo();
 
           $$.v = "";
-          $$.c = $5.c + "\t" + labelTeste + ":\n" + $7.c +
-          "\t" + varTeste + " = !" + $7.v + ";\n" +
+          $$.c = $3.c + "\t" + labelTeste + ":\n" + $5.c +
+          "\t" + varTeste + " = !" + $5.v + ";\n" +
           "\tif( " + varTeste + " ) goto " + labelFim +";\n" +
-          $10.c +
+          $7.c + $8.c +
           "\tgoto " + labelTeste + ";\n" +
           "\t" + labelFim + ":\n ;";
       }
@@ -768,7 +782,6 @@ CMD_SWITCH : _INVESTIGA '(' ID_LABEL ')' _ALFA CASES DEFAULT _OMEGA
 
 ;
 
-
 //SWITCH
 ID_LABEL: _ID
 {
@@ -808,8 +821,6 @@ DEFAULT : _INOCENTE ':' VARS_LOCAIS CMDS _CASO_ENCERRADO ';'
 }
 ;
 
-
-
 //PIPES
 CMD_PIPE : _INTERVALO '[' E '~' INI_PIPE ']' PROCS CONSOME
           {
@@ -825,15 +836,36 @@ CMD_PIPE : _INTERVALO '[' E '~' INI_PIPE ']' PROCS CONSOME
             geraCodigoFor( &$$, inicio, condicao, passo, cmd );
             pipeAtivo = ""; 
             }
-        ;
+            
+         | _INTERVALO '[' INI_PIPE ']' PROCS CONSOME 
+		{
+			TAM_ARRAY=	$3.p;
+			
+			
+			Atributo inicio, condicao, passo, cmd;
+            inicio.c =  $3.c +"  x_" + pipeAtivo + " = 0;\n";
+            condicao.t.nome = "bool";
+            condicao.v = gera_temp("B"); 
+            condicao.c = "  " + condicao.v + " = " + "x_" + pipeAtivo + " < " + TAM_ARRAY + ";\n";
+            passo.c = RotuloFimPipe + ":\n" + "  x_" + pipeAtivo + " = x_" + pipeAtivo + " + 1;\n";
+            cmd.c = $5.c + $6.c;
+			geraCodigoForArray( &$$, inicio, condicao, passo, cmd );
+            pipeAtivo = "";
+            
+			}
+;
+        
 INI_PIPE : E
         {
 			$$ = $1;
 			lastpipe = $1.v;
 			pipeAtivo =  $1.t.nome;
 			RotuloFimPipe = gera_rotulo();
+			$$.p=$1.p;
+			
 		}
 	 ;
+
 
 PROCS : _PIPE PROC PROCS
         { $$.c = $2.c + $3.c; }
@@ -851,7 +883,6 @@ CONSOME : _FOREACH '[' CMDS ']'
         ;
 
 //end_PIPES
-
 
 
 CMD_E : E { }
@@ -926,10 +957,12 @@ F   : _ID
 
       compara_parametros($1.v, $3.p);
     }
-    | _ID '(' E ')'
+    | _ID '{' F '}'
     {
+		
+	  $$.p = $3.v;
       busca_variavelglobal($1.v, & $1.t);
-      busca_varlocal($1.v, & $1.t);
+      busca_varlocal($1.v, & $1.t);  
 
       $$.t = $1.t;
 
@@ -937,7 +970,7 @@ F   : _ID
 
       string aux = gera_temp($3.t.tipo_base);
 
-      if ($3.t.ndim !=0 )
+      if ($3.t.ndim != 0 )
       {
         $$.c += aux + " = " + $3.v + ";\n";
         $3.v = aux;
@@ -955,7 +988,7 @@ F   : _ID
         $$.v =  $1.v + "[" + $3.v + "]";
       }
     }
-    | _ID '(' E ',' E ')'
+    | _ID '{' F ',' F '}'
     {
       busca_variavelglobal($1.v, & $1.t);
       busca_varlocal($1.v, & $1.t);
@@ -1013,6 +1046,7 @@ F   : _ID
 		else
 				erro( "Ei! Vamos aprender a programar hein!\n A variavel 'x' so pode ser usada dentro de pipe" );
     }
+  
     ;
 
 LST_E	: LST_E ',' E
@@ -1135,13 +1169,13 @@ bool pode_inserir_varglobal (string nome)
 
 void tipo_resultado(string operador, Atributo op1, Atributo op2, Atributo &resultado)
 {
-
 	//	teste leo
 	if (op1.v == "x_int") op1.t.tipo_base = "I";
 	if (op1.v == "x_float") op1.t.tipo_base = "R";
 	if (op1.v == "x_double") op1.t.tipo_base = "D";
 	if (op1.v == "x_char") op1.t.tipo_base = "C";
 	
+    
   int i;
   for(i = 0; i < TAM_MAX_OPERADORES; i++)
   {
@@ -1338,6 +1372,7 @@ void inclui_parametro(string nome, Tipo t)
   TS_funcao[nfuncao].parametro[p].nome = nome;
   TS_funcao[nfuncao].parametro[p].t = t;
   TS_funcao[nfuncao].nparam++;
+  
 }
 
 bool busca_funcao(string nome, Tipo *tr)
@@ -1386,6 +1421,7 @@ bool existe_parametro(string nome)
 
 void inclui_funcao(string nome, Tipo retorno, string lista_parametros)
 {
+    
   if(existe_funcao(nome))
   {
     erro("De novo? Bebeste? Essa funcao ja foi declarada.");
@@ -1393,7 +1429,7 @@ void inclui_funcao(string nome, Tipo retorno, string lista_parametros)
   TS_funcao[nfuncao].nome = nome;
   TS_funcao[nfuncao].retorno = retorno;
   TS_funcao[nfuncao].lista_parametros = lista_parametros;
-
+  
 }
 
 string quebra_codigo_parametro(string nometemp, string vetorid, string lsttemp, string lstcodtemp, string tiporet)
@@ -1404,7 +1440,7 @@ string quebra_codigo_parametro(string nometemp, string vetorid, string lsttemp, 
   string b;
   string lista;
   string lista_completa;
-
+  
   int i = 0, j = 0, contador = 0;
 
   getchar();
@@ -1444,7 +1480,6 @@ string quebra_codigo_parametro(string nometemp, string vetorid, string lsttemp, 
     j++;
   }
 
-
   if(tiporet != "V")
   {
     lista_completa = vetorid + "(" + lista + nometemp + ");\n";
@@ -1459,6 +1494,7 @@ string quebra_codigo_parametro(string nometemp, string vetorid, string lsttemp, 
     string saida = vetorid + "("+  lista + ");\n";
     return saida;
   }
+  
 
 }
 
@@ -1513,6 +1549,7 @@ string toStr( int n ) {
 
 bool compara_parametros(string nome, string parametros)
 {
+  
   int i;
   for(i = 0; i < nfuncao; i++)
   {
@@ -1534,11 +1571,10 @@ string inteiro_string(int n)
   sprintf(linha, "%d", n);
   return linha;
 }
-
 string gera_temp(string tipo)
 {
   char variavel[200];
-
+ 
   if (tipo == "I")
   {
     sprintf(variavel, "Temp_I%d", NTEMP.i++);
@@ -1582,7 +1618,6 @@ string gera_variavellocal_temp()
 
   for (i = 0; i < nvarlocal; i++)
   {
-
     if (TS_varlocal[i].t.tipo_base == "B" || TS_varlocal[i].t.tipo_base == "I")
     {
       c += "int " + TS_varlocal[i].nome + parte_vetor(TS_varlocal[i].t) + ";\n";
@@ -1615,7 +1650,7 @@ string gera_variavellocal_temp()
   c += gera_decl_temp("float", "R", NTEMP.r);
   c += gera_decl_temp("double", "D", NTEMP.d);
   c += gera_decl_temp("int", "B", NTEMP.b);
-  c += gera_decl_temp("char", "C", NTEMP.c);
+   c += gera_decl_temp("char", "C", NTEMP.c);
 
   aux = NTEMP.s;
   c += gera_decl_temp("char", "S", NTEMP.s);
@@ -1663,20 +1698,17 @@ void gera_codigo_operador(Atributo &ss, Atributo &s1, Atributo &s2, Atributo &s3
   {
     if(s1.t.tipo_base == "")
     {	
-		erro("'" + s1.v + "'" + " nao foi declarada.\nTu não declarou e quer usar. Deixa de ser experto.");
+		erro("'" + s1.v + "'" + " nao foi declarada.\nTu não declarou e quer usar. Deixa de ser esperto.");
     }
     else if (s3.t.tipo_base == "")
     {
-      erro("'" + s3.v + "'" + " nao foi declarada.\nTu não declarou e quer usar. Deixa de ser experto.");
+      erro("'" + s3.v + "'" + " nao foi declarada.\nTu não declarou e quer usar. Deixa de ser esperto.");
     }
     else
     {
-      //erro("O operador (" + s2.v + ") nao se aplica a (" + s1.t.tipo_base + ") e (" + s3.t.tipo_base + ").\n");
 	  erro(
 			"Perai! Nao da pra fazer isso neh meu filho! Essa linguagem eh limitada\nTu quer fazer (" + s1.t.tipo_base + ") " + s2.v + " (" + s3.t.tipo_base + ").\n"
-			);
-	  
-      
+            );
     }
   }
   else
@@ -1824,9 +1856,36 @@ void geraCodigoFor( Atributo* SS, const Atributo& inicial,const Atributo& condic
 
 }
 
+void geraCodigoForArray( Atributo* SS, const Atributo& inicial,const Atributo& condicao,const Atributo& passo,const Atributo& cmds ) {
+
+			string forCond = gera_rotulo();
+			string forFim = gera_rotulo();
+			string valorNotCond = gera_temp("B");
+				
+
+			*SS = Atributo();
+
+			SS->c = inicial.c + 
+			
+			forCond + ":\n" + condicao.c + "  " + valorNotCond + " = !" + condicao.v + ";\n" +
+			"  if( " + valorNotCond + " ) goto " + forFim + ";\n" +
+			cmds.c + passo.c +
+			"  goto " + forCond + ";\n" +
+			forFim + ":\n";
+
+}
+
+
+
 string DeclaraVarPipes() {
 
+		
 		string ss = "";
+		ss +="// *uso do pipe \n";
+		ss +="double x_double;\n";
+		ss +="float x_float;\n";
+		ss +="char x_char;\n";
+		ss +="int x_int;\n"; 
 		
         Tipo tp;
 		tp.nome="int";
@@ -1856,3 +1915,4 @@ string DeclaraVarPipes() {
 
 		return ss;
 }
+

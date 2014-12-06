@@ -340,9 +340,6 @@ void yyfree (void *  );
 
 /* Begin user sect3 */
 
-#define yywrap(n) 1
-#define YY_SKIP_YYWRAP
-
 typedef unsigned char YY_CHAR;
 
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
@@ -637,7 +634,7 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "trabalho.lex"
-#line 641 "lex.yy.c"
+#line 638 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -827,7 +824,7 @@ YY_DECL
 #line 19 "trabalho.lex"
 
 
-#line 831 "lex.yy.c"
+#line 828 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -1226,7 +1223,7 @@ YY_RULE_SETUP
 #line 102 "trabalho.lex"
 ECHO;
 	YY_BREAK
-#line 1230 "lex.yy.c"
+#line 1227 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

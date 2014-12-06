@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <cstring>
 #include <string>
 #include <iostream>
 
@@ -13,15 +12,14 @@ double dd;
 char cc;
 char ss[256];
 int bb;
-int main ()
-{
-
- // *uso do pipe 
+// *uso do pipe 
 double x_double;
 float x_float;
 char x_char;
 int x_int;
-int b;
+int main ()
+{
+ int b;
 int c;
 int d;
 int temp;
@@ -106,10 +104,10 @@ Temp_I19 = 9;
 ZETA[Temp_I18] = Temp_I19;
 Temp_I20 = 10;
 temp = Temp_I20;
-  cout << "Dado o vetor ZETA[";
-   cout << temp;
-   cout << "]\n";
-   cout << "mostre os pares, separando-os: \n";
+cout << "Dado o vetor ZETA[";
+ cout << temp;
+ cout << "]\n";
+ cout << "mostre os pares, separando-os: \n";
    x_int = 0;
 ROT1:
   Temp_B2 = x_int < temp;
@@ -123,13 +121,13 @@ Temp_I26 = 0;
 Temp_B0 = Temp_I25==Temp_I26;
   Temp_B1 = !Temp_B0;
   if( Temp_B1 ) goto ROT0;
-  cout << ZETA[x_int];
-   cout << " - ";
+cout << ZETA[x_int];
+ cout << " - ";
  ROT0:
   x_int = x_int + 1;
   goto ROT1;
 ROT2:
-  cout << "\nAgora os ímpares, porém coloque um ponto e virgula quando chegar no final: \n";
+cout << "\nAgora os ímpares, porém coloque um ponto e virgula quando chegar no final: \n";
    x_int = 0;
 ROT6:
   Temp_B8 = x_int < temp;
@@ -149,20 +147,18 @@ Temp_B6 = x_int<Temp_I33;
 Temp_B7 =  ! Temp_B6 ;
 if(Temp_B7)
 goto ROT4;
-  cout << ZETA[x_int];
-   cout << ", ";
+cout << ZETA[x_int];
+ cout << ", ";
  goto ROT5;
 ROT4: ;
-  cout << ZETA[x_int];
-   cout << ";";
+cout << ZETA[x_int];
+ cout << ";";
  ROT5: ;
 ROT3:
   x_int = x_int + 1;
   goto ROT6;
 ROT7:
-  cout << "\n";
+cout << "\n";
  
-
- return 0; 
 }
 

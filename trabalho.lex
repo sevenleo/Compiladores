@@ -3,18 +3,18 @@ LINHA   [\n]
 NUMERO  [0-9]
 LETRA   [A-Za-z_]
 INT     {NUMERO}+
-
+BOOLV    "yang"
+BOOLF    "yin"
 FLOAT   {NUMERO}+("."{NUMERO}+)[f|F]?
 DOUBLE  {NUMERO}+("."{NUMERO}+)[d|D]?
 ID      {LETRA}({LETRA}|{NUMERO})*
 STRING  \"[^"\n]*\"
 CHAR	"\'"."\'"
 COMMENT "//".*
-BOOLV    "yang"
-BOOLF    "yin"
 
 
-%option noyywrap
+
+
 
 %%
 

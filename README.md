@@ -1,4 +1,0 @@
-Compiladores
-============
-
-dontpad.com/compiladoresgrupoalfa
