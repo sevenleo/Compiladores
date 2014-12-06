@@ -1,0 +1,41 @@
+Dado o vetor ZETA[10]
+mostre os pares, separando-os: 
+0 - 2 - 4 - 6 - 8 - 
+Agora os ímpares, porém coloque um ponto e virgula quando chegar no final: 
+1, 3, 5, 7, 9;
+
+Dentro do intervalo de 1 ate 100
+mostre os primeiros10, porém multiplique-os por 10.0001 antes de imprimir
+10.0001
+20.0002
+30.0003
+40.0004
+50.0005
+60.0006
+70.0007
+80.0008
+90.0009
+100.001
+mostre os ultimos 10, porém multiplique-os por 10.0001 antes de imprimir
+910.009
+920.009
+930.009
+940.009
+950.01
+960.01
+970.01
+980.01
+990.01
+1000.01
+
+Quais caracteres temos entre A-z ? 
+ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+
+Quantos nao sao letras ? 
+[\]^_`
+
+Agora mostre somente as letras maiusculas:
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+Agora mostre somente as letras minusculas:
+abcdefghijklmnopqrstuvwxyz
