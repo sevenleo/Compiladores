@@ -1,0 +1,48 @@
+int ii;
+float ff;
+double dd;
+char cc;
+string ss;
+bool bb;
+
+//main()
+LetTheGamesBegin()
+
+
+
+            
+alfa   //inicio de funcao
+
+
+		int b,c,d,temp;
+		double temp1 ;
+		int ZETA(6);
+		char a,z;
+
+		ZETA(0) <-0;
+		ZETA(1) <-1;
+		ZETA(2) <-2;
+		ZETA(3) <-3;
+		ZETA(4) <-4;
+		ZETA(5) <-5;
+		ZETA(6) <-6;
+		ZETA(7) <-7;
+		ZETA(8) <-8;
+		ZETA(9) <-9;
+
+		temp <- 10; //tamanho de zeta
+
+		mostre <<"Dado o vetor ZETA["<< temp <<"]\n";
+		mostre <<"mostre os pares, separando-os: \n";
+		dentro de [ZETA(temp)]  => somente se [ZETA(x) %2 ==0] =>  para cada um [mostre <<  ZETA(x) <<  " - ";]
+
+		mostre <<"\nAgora os ímpares, porém coloque um ponto e virgula quando chegar no final: \n";
+		dentro de [ZETA(temp)]  => somente se [ZETA(x) %2 > 0] =>  para cada um [ 
+																	rola se (x<temp-1) mostre <<  ZETA(x) <<  ", ";
+																	nao rolou mostre <<  ZETA(x) <<  ";";
+																	end nao rolou
+																]
+
+
+mostre <<  "\n";
+omega   //fim da main
