@@ -18,7 +18,6 @@ alfa   //inicio da funcao main
 
 
 
-
 omega  //fim da main
 
 //COLOQUE SUAS FUNCOES AQUI
