@@ -1,16 +1,4 @@
-all: trabalho
-	@echo ____________________________________________________________________Cria
-	@./trabalho < entrada.cc 
-	@./trabalho < entrada.cc > saida.c
-	@echo ____________________________________________________________________compila
-	cat saida.c
-	@echo ------------
-	g++ saida.c 
-	@echo ____________________________________________________________________Executa
-	@./a.out
- 	
-
-tudo: trabalho
+all:  trabalho
 	@echo ____________________________________________________________________Cria
 	@./trabalho < files/5.funfa 
 	@./trabalho < files/5.funfa  > files/5.c
@@ -35,7 +23,16 @@ tudo: trabalho
 	@./PROG4
 	@./PROG5
 
-
+entrada: trabalho
+	@echo ____________________________________________________________________Cria
+	@./trabalho < entrada.cc 
+	@./trabalho < entrada.cc > saida.c
+	@echo ____________________________________________________________________compila
+	cat saida.c
+	@echo ------------
+	g++ saida.c 
+	@echo ____________________________________________________________________Executa
+	@./a.out
  	
 lex.yy.c: trabalho.lex
 	@echo ____________________________________________________________________1/4
