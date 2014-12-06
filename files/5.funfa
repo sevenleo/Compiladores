@@ -38,7 +38,7 @@ alfa   //inicio de funcao
 
 		mostre <<"\nAgora os ímpares, porém coloque um ponto e virgula quando chegar no final: \n";
 		dentro de [ZETA{temp}]  => somente se [ZETA{x} %2 > 0] =>  para cada um [ 
-																	rola se (x<temp-1) mostre <<  ZETA{x} <<  ", ";
+																	rola se (x < (temp - 1)) mostre <<  ZETA{x} <<  ", ";
 																	nao rolou mostre <<  ZETA{x} <<  ";";
 																	end nao rolou
 																]
@@ -63,7 +63,7 @@ alfa   //inicio de funcao
 		mostre << "\n\nAgora mostre somente as letras maiusculas:\n";
 		dentro de [a~z] => somente se [x <= 'Z']=>para cada um [mostre << x; ]
 		mostre << "\n\nAgora mostre somente as letras minusculas:\n";
-		dentro de [a~z] => somente se [x > 'Z' + ('a'-'Z') -1 ] =>para cada um [mostre << x;]
+		dentro de [a~z] => somente se [x > ('Z' + ('a'-'Z') - 1) ] =>para cada um [mostre << x;]
 
 
 

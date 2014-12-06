@@ -1,36 +1,94 @@
-//--------------------------- PROGRAMA 1 ---------------------------------------
+//--------------------------- PROGRAMA 3 ---------------------------------------
 
-//Prototipos
-prototype int recursive_MDC(int n1, int n2);
+//Prototipos de funcoes
+prototype int discriminante (double a, double b, double c);
 
 //main()
 LetTheGamesBegin()
 
 alfa   //inicio da funcao main
 
-int a, b;
-int mdc;
+int a, b, c;
+int delta;
+double raiz1, raiz2;
+int sqrt;
+int i;
 
-mostre << "Entre com dois numeros para calcular o MDC: " << "\n";
-leia a;
-leia b;
+bool imaginaria <- yin;
+bool user_option <- yang;   //yang = true e yin = false
+string resposta;
+string NAO;
 
-mdc <- recursive_MDC(a, b);
+string option;
 
-mostre << "O MDC entre " << a << " e " << b << " e igual a: " << mdc << "\n" << "\n";
+//DO WHILE
+	faz
+		mostre << "Entre com o coeficiente a da equacao do 2 grau: " << "\n";
+		leia a;
 
-omega  //fim da funcao main
+		mostre << "Entre com o coeficiente b da equacao do 2 grau: " << "\n";
+		leia b;
+
+		mostre << "Entre com o coeficiente c da equacao do 2 grau: " << "\n";
+		leia c;
+
+		delta <- discriminante(a, b, c);
+
+		mostre << "\nDelta = " << delta << "\n" << "\n";
 
 
-//------------------IMPLEMENTACAO DAS FUNCOES------------------------------------
+		rola se(delta < 0)
 
-//MDC RECURSIVO
-int recursive_MDC(int n1, int n2)
+			mostre << "Delta negativo!! Raizes serao complexas!!" << "\n";
+			delta <- delta * -1;
+			imaginaria <- yang;
+		rolou
+
+		//Calculo da raiz quadrada de delta        
+        sqrt <- delta;
+        enrolando(i <- 0; i < (delta / 2))
+        	sqrt <- (sqrt + delta / sqrt) / 2;
+        	i <- i + 1;
+        end enrolando
+
+        mostre << "\nRaiz de delta (Valor inteiro da raiz de delta) = " << sqrt << "\n";
+
+        //Calculo das raizes
+        raiz1 <- ( (b * -1) + sqrt) / (2 * a);
+		raiz2 <- ( (b * -1) - sqrt) / (2 * a);
+
+		rola se(imaginaria)
+			
+			mostre << "\nRaiz 1: (" << b * -1 << " + " << sqrt << "i ) / " << 2 * a << "\n";
+			mostre << "Raiz 2: (" << b * -1 << " - " << sqrt << "i ) / " << 2 * a << "\n";
+
+		nao rolou
+			mostre << "\nRaiz 1: " << raiz1 << "\n";
+			mostre << "Raiz 2: " << raiz2 << "\n";
+		end nao rolou
+
+		imaginaria <- yin;
+
+
+		mostre << "Deseja entrar com outra equacao? (Digite 'sim' ou 'nao')" << "\n";
+		leia option;
+
+		//N é uma string
+		NAO <-"nao";
+		rola se(option == NAO)
+			user_option <- yin;
+		rolou
+
+	enrola se(user_option);
+
+
+omega  //fim da main
+
+
+//------------------IMPLEMENTACAO DAS FUNCOES USADAS NO CODIGO------------------------
+int discriminante(double a, double b, double c)
 alfa
 
-rola se (n2 == 0)
-	respondo n1;
-rolou
-respondo recursive_MDC(n2, n1 % n2);
+respondo (b * b) - (4 * a * c);
 
 omega

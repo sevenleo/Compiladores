@@ -16,7 +16,7 @@ tudo: trabalho
 	@./trabalho < files/5.funfa  > files/5.c
 		@./trabalho < files/4.funfa 
 	@./trabalho < files/4.funfa  > files/4.c
-		@./trabalho < files/0.funfa 
+		@./trabalho < files/3.funfa 
 	@./trabalho < files/3.funfa  > files/3.c
 		@./trabalho < files/2.funfa 
 	@./trabalho < files/2.funfa  > files/2.c
@@ -54,5 +54,7 @@ clean:
 	rm lex.yy.c
 	rm trabalho
 	rm a.out 
+	rm files/*.c
+
 
 	

@@ -117,7 +117,7 @@ TIPO_OPER tipo_operador[TAM_MAX_OPERADORES] = {
             {"==", "C", "S", "B"},
             {"==", "S", "C", "B"},
             {"==", "S", "S", "B"},
-            {"==", "S", "S", "B"},
+            
             {"<>", "I", "I", "B"},
             {"<>", "I", "R", "B"},
             {"<>", "R", "I", "B"},
@@ -263,6 +263,10 @@ TIPO_OPER tipo_operador[TAM_MAX_OPERADORES] = {
             {"+", "I", "C", "C"},
             {"-", "C", "I", "C"},
             {"+", "I", "C", "C"},
+            {"==", "B", "B", "B"},
+             {"/", "D", "D", "D"},
+            {"/", "D", "I", "D"},
+            {"<-", "I", "D", "I"},
             {"%", "I", "I", "I"}
             };
 
@@ -699,18 +703,17 @@ CMD_DO_WHILE: _FAZ VARS_LOCAIS CMDS _ENROLA_SE '(' E ')' ';'
     string varTeste = gera_temp( "B" );
     string labelFim = gera_rotulo();
     string labelTeste = gera_rotulo();
-
+ 
     $$.v = "";
-    $$.c = "\t" + labelTeste + ":\n" + $6.c +
+    $$.c = $2.c + "\t" + labelTeste + ":\n" + $6.c +
     "\t" + varTeste + " = !" + $6.v + ";\n" +
     "\tif( " + varTeste + " ) goto " + labelFim +";\n" +
     $3.c +
     "\tgoto " + labelTeste + ";\n" +
-    "\t" + labelFim + ":\n";
+    "\t" + labelFim + ":\n ;";
 }
-;
 
-//No nosso for nao declaramos variavel, a variavel ja tem que ter sido declarada! Temos que incrementar manualmente.
+
 CMD_FOR   : _ENROLANDO '(' E ';' E ')' VARS_LOCAIS CMDS _END_ENROLANDO
       {
 
@@ -1253,11 +1256,11 @@ string gera_decl_temp(string tipo, string tipo_base, int &n)
   {
     if(tipo_base == "S")
     {
-      c += tipo + " " + "Temp_" + tipo_base +  inteiro_string(i) + "[256];\n";
+      c += tipo + " " + "T" + tipo_base +  inteiro_string(i) + "[256];\n";
     }
     else
     {
-      c += tipo + " " + "Temp_" + tipo_base +  inteiro_string(i) + ";\n";
+      c += tipo + " " + "T" + tipo_base +  inteiro_string(i) + ";\n";
     }
   }
   n = 0;
@@ -1577,27 +1580,27 @@ string gera_temp(string tipo)
  
   if (tipo == "I")
   {
-    sprintf(variavel, "Temp_I%d", NTEMP.i++);
+    sprintf(variavel, "TI%d", NTEMP.i++);
   }
   else if (tipo == "R")
   {
-    sprintf(variavel, "Temp_R%d", NTEMP.r++);
+    sprintf(variavel, "TR%d", NTEMP.r++);
   }
   else if (tipo == "C")
   {
-    sprintf(variavel, "Temp_C%d", NTEMP.c++);
+    sprintf(variavel, "TC%d", NTEMP.c++);
   }
   else if (tipo == "S")
   {
-    sprintf(variavel, "Temp_S%d", NTEMP.s++);
+    sprintf(variavel, "TS%d", NTEMP.s++);
   }
   else if (tipo == "B")
   {
-    sprintf(variavel, "Temp_B%d", NTEMP.b++);
+    sprintf(variavel, "TB%d", NTEMP.b++);
   }
   else if (tipo == "D")
   {
-      sprintf(variavel, "Temp_D%d", NTEMP.d++);
+      sprintf(variavel, "TD%d", NTEMP.d++);
   }
   return variavel;
 }
@@ -1657,7 +1660,7 @@ string gera_variavellocal_temp()
 
   for (i = 0; i < aux; i++)
   {
-    c += "Temp_S" + inteiro_string(i) + "[255] = '\\0';\n";
+      c += "TS" + inteiro_string(i) + "[255] = '\\0';\n";
   }
 
   nvarlocal = 0;
@@ -1688,17 +1691,18 @@ void insere_varglobal (string nome, Tipo t)
   }
 }
 
+
 void gera_codigo_operador(Atributo &ss, Atributo &s1, Atributo &s2, Atributo &s3)
 {
-	
-	
+    
+ 
   tipo_resultado(s2.v,s1,s3,ss);
-
+ 
   if (ss.t.tipo_base == "ERRO")
   {
     if(s1.t.tipo_base == "")
-    {	
-		erro("'" + s1.v + "'" + " nao foi declarada.\nTu não declarou e quer usar. Deixa de ser esperto.");
+    {   
+        erro("'" + s1.v + "'" + " nao foi declarada.\nTu não declarou e quer usar. Deixa de ser esperto.");
     }
     else if (s3.t.tipo_base == "")
     {
@@ -1706,8 +1710,8 @@ void gera_codigo_operador(Atributo &ss, Atributo &s1, Atributo &s2, Atributo &s3
     }
     else
     {
-	  erro(
-			"Perai! Nao da pra fazer isso neh meu filho! Essa linguagem eh limitada\nTu quer fazer (" + s1.t.tipo_base + ") " + s2.v + " (" + s3.t.tipo_base + ").\n"
+      erro(
+            "Perai! Nao da pra fazer isso neh meu filho! Essa linguagem eh limitada\nTu quer fazer (" + s1.t.tipo_base + ") " + s2.v + " (" + s3.t.tipo_base + ").\n"
             );
     }
   }
@@ -1719,7 +1723,7 @@ void gera_codigo_operador(Atributo &ss, Atributo &s1, Atributo &s2, Atributo &s3
       {
         string aux = gera_temp(s3.t.tipo_base);
         ss.c = s1.c + s3.c + aux + " = " + s3.v + ";\n"+  s1.v + " = " + aux + ";\n";
-
+ 
         if (s1.t.tipo_base == "S")
         {
           string aux = gera_temp(s1.t.tipo_base);
@@ -1788,11 +1792,24 @@ void gera_codigo_operador(Atributo &ss, Atributo &s1, Atributo &s2, Atributo &s3
             ss.c = s1.c + s3.c + "strncpy(" + ss.v + "," + s1.v + ",256);\n" + "strcat(" + ss.v + "," + s3.v + ");\n";
             ss.t.tipo_base = "S";
           }
+          
+          if (s2.v == "==")
+          {
+              string aux = gera_temp("B");
+              aux = "string( " + s1.v + " ) == string( " + s3.v + " )";
+              
+              ss.v = gera_temp(ss.t.tipo_base);
+              ss.c = "if( " + aux + " == 1 ) " + s1.c + s3.c + ss.v + " = 1;\n" + "else " + s1.c + s3.c + ss.v + " = 0;\n";
+              ss.t.tipo_base = "B";
+          }
+        
         }
         else
         {
           ss.v = gera_temp(ss.t.tipo_base);
-          if(s2.v == "<>")
+          if(s2.v == "==")
+            ss.c = s1.c + s3.c + ss.v + " = " + s1.v + "==" + s3.v + ";\n";
+          else if(s2.v == "<>")
             ss.c = s1.c + s3.c + ss.v + " = " + s1.v + "==" + s3.v + ";\n";
           else if(s2.v == "OU")
             ss.c = s1.c + s3.c + ss.v + " = " + s1.v + "||" + s3.v + ";\n";

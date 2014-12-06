@@ -2,11 +2,11 @@ DELIM   [\t ]
 LINHA   [\n]
 NUMERO  [0-9]
 LETRA   [A-Za-z_]
-INT     {NUMERO}+
+INT     [-]?{NUMERO}+
 BOOLV    "yang"
 BOOLF    "yin"
-FLOAT   {NUMERO}+("."{NUMERO}+)[f|F]?
-DOUBLE  {NUMERO}+("."{NUMERO}+)[d|D]?
+FLOAT   [-]?{NUMERO}+("."{NUMERO}+)[f|F]?
+DOUBLE  [-]?{NUMERO}+("."{NUMERO}+)[d|D]?
 ID      {LETRA}({LETRA}|{NUMERO})*
 STRING  \"[^"\n]*\"
 CHAR	"\'"."\'"

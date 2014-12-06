@@ -18,15 +18,15 @@ int main ()
  int a;
 int b;
 int mdc;
-int Temp_I0;
-int Temp_I1;
+int TI0;
+int TI1;
 cout << "Entre com dois numeros para calcular o MDC: ";
  cout << "\n";
  cin >> a ;
 cin >> b ;
-recursive_MDC(a, b, Temp_I0);
-Temp_I1 = Temp_I0;
-mdc = Temp_I1;
+recursive_MDC(a, b, TI0);
+TI1 = TI0;
+mdc = TI1;
 cout << "O MDC entre ";
  cout << a;
  cout << " e ";
@@ -43,28 +43,28 @@ void recursive_MDC(int n1,int n2,int &RI)
 float x_float;
 double x_double;
 char x_char;
-int Temp_I0;
-int Temp_I1;
-int Temp_I2;
-int Temp_I3;
-int Temp_I4;
-int Temp_I5;
-int Temp_B0;
-int Temp_B1;
-Temp_I0 = n2;
-Temp_I1 = 0;
-Temp_B0 = Temp_I0==Temp_I1;
-Temp_B1 =  ! Temp_B0 ;
-if(Temp_B1)
+int TI0;
+int TI1;
+int TI2;
+int TI3;
+int TI4;
+int TI5;
+int TB0;
+int TB1;
+TI0 = n2;
+TI1 = 0;
+TB0 = TI0==TI1;
+TB1 =  ! TB0 ;
+if(TB1)
 goto ROT0;
 RI = n1;
 return;
 ROT0: ;
-Temp_I3 = n1;
-Temp_I4 = n2;
-Temp_I2 = Temp_I3%Temp_I4;
-recursive_MDC(n2, Temp_I2, Temp_I5);
-RI = Temp_I5;
+TI3 = n1;
+TI4 = n2;
+TI2 = TI3%TI4;
+recursive_MDC(n2, TI2, TI5);
+RI = TI5;
 return;
 
 }
