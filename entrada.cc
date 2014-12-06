@@ -1,94 +1,26 @@
-//--------------------------- PROGRAMA 3 ---------------------------------------
+//CRIE SUAS GLOBAIS AQUI
 
-//Prototipos de funcoes
-prototype int discriminante (double a, double b, double c);
+//CRIE SEUS PROTOTIPOS DE FUNCAO AQUI
 
-//main()
-LetTheGamesBegin()
+
+
+LetTheGamesBegin() //main()
 
 alfa   //inicio da funcao main
 
-int a, b, c;
-int delta;
-double raiz1, raiz2;
-int sqrt;
-int i;
-
-bool imaginaria <- yin;
-bool user_option <- yang;   //yang = true e yin = false
-string resposta;
-string NAO;
-
-string option;
-
-//DO WHILE
-	faz
-		mostre << "Entre com o coeficiente a da equacao do 2 grau: " << "\n";
-		leia a;
-
-		mostre << "Entre com o coeficiente b da equacao do 2 grau: " << "\n";
-		leia b;
-
-		mostre << "Entre com o coeficiente c da equacao do 2 grau: " << "\n";
-		leia c;
-
-		delta <- discriminante(a, b, c);
-
-		mostre << "\nDelta = " << delta << "\n" << "\n";
 
 
-		rola se(delta < 0)
 
-			mostre << "Delta negativo!! Raizes serao complexas!!" << "\n";
-			delta <- delta * -1;
-			imaginaria <- yang;
-		rolou
-
-		//Calculo da raiz quadrada de delta        
-        sqrt <- delta;
-        enrolando(i <- 0; i < (delta / 2))
-        	sqrt <- (sqrt + delta / sqrt) / 2;
-        	i <- i + 1;
-        end enrolando
-
-        mostre << "\nRaiz de delta (Valor inteiro da raiz de delta) = " << sqrt << "\n";
-
-        //Calculo das raizes
-        raiz1 <- ( (b * -1) + sqrt) / (2 * a);
-		raiz2 <- ( (b * -1) - sqrt) / (2 * a);
-
-		rola se(imaginaria)
-			
-			mostre << "\nRaiz 1: (" << b * -1 << " + " << sqrt << "i ) / " << 2 * a << "\n";
-			mostre << "Raiz 2: (" << b * -1 << " - " << sqrt << "i ) / " << 2 * a << "\n";
-
-		nao rolou
-			mostre << "\nRaiz 1: " << raiz1 << "\n";
-			mostre << "Raiz 2: " << raiz2 << "\n";
-		end nao rolou
-
-		imaginaria <- yin;
+//LEMBRE DE DECLARAR AS VARIAVEIS ANTES DE COMECAR OS SEUS COMANDOS 
+//ESSA ORDEM IMPEDE um CODIGO BAGUNÇADO 
 
 
-		mostre << "Deseja entrar com outra equacao? (Digite 'sim' ou 'nao')" << "\n";
-		leia option;
 
-		//N é uma string
-		NAO <-"nao";
-		rola se(option == NAO)
-			user_option <- yin;
-		rolou
 
-	enrola se(user_option);
+
 
 
 omega  //fim da main
 
+//COLOQUE SUAS FUNCOES AQUI
 
-//------------------IMPLEMENTACAO DAS FUNCOES USADAS NO CODIGO------------------------
-int discriminante(double a, double b, double c)
-alfa
-
-respondo (b * b) - (4 * a * c);
-
-omega
