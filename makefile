@@ -51,7 +51,9 @@ clean:
 	rm lex.yy.c
 	rm trabalho
 	rm a.out 
-	rm files/*.c
+	rm PROG*
+	rm saida.c
+
 
 
 	
