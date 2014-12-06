@@ -13,9 +13,6 @@ CHAR	"\'"."\'"
 COMMENT "//".*
 
 
-
-
-
 %%
 
 {LINHA}    	{ nlinha++; }
